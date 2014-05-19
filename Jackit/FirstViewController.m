@@ -18,24 +18,28 @@
 
 - (void)viewDidLoad
 {
-    [super viewDidLoad];
+    /*[super viewDidLoad];
 	// Do any additional setup after loading the view.
     self.baseURL = @"http://jacbaciatge.herokuapp.com";
     [self searchPartnerPost];
     BOOL isPartnerFound =[self startRequest];
     if (isPartnerFound){
     NSLog(@"Begin of useless for loop");
-        for(int i=0; i < 1000000000; i+=2){
+    for(int j = 0; j < 1000000000; j++)
+    {
+        for(int i=0; i < 2000000000; i+=2){
             i--;
             i+=2;
             i-=2;
+            i+=2;
+            i-=2;
+        }
     }
     NSLog(@"End of useless for loop");
     double madeUpScore = 2016;
     [self endGamePost:(double) madeUpScore];
     [self finalGet];
-    
-}
+}*/
 }
 
 #pragma mark - CLLocationManagerDelegate
@@ -95,11 +99,33 @@
     NSString* getRequest;
     NSString *responseString;
     int currentTime = 1;
-    NSLog(@"TEST2");
     
+    NSDate *currentDateTime = [NSDate date];
+    NSDate *finalDateTime = [currentDateTime dateByAddingTimeInterval:20];
+    NSTimeInterval distanceBetweenDates = [finalDateTime timeIntervalSinceDate:currentDateTime];
 do{
-        getRequest = [NSString stringWithFormat:@"%@/%@/%@", @"http://jacbaciatge.herokuapp.com", @"check", [PFUser currentUser].username];
-        NSLog(@"url: %@", getRequest);
+    
+    /*for(int i=0; i < 10000000; i+=2)
+    {
+        i--;
+        i+=2;
+        i-=2;
+    }
+    */
+    NSDate *innerDateTime = [NSDate date];
+    NSDate *innerFinalDateTime = [currentDateTime dateByAddingTimeInterval:1.5];
+    NSTimeInterval innerDistanceBetweenDates = [innerFinalDateTime timeIntervalSinceDate:innerDateTime];
+    
+    while (innerDistanceBetweenDates > 0)
+    {
+        NSLog(@"Killing time");
+        innerDateTime = [NSDate date];
+        innerDistanceBetweenDates = [innerFinalDateTime timeIntervalSinceDate:innerDateTime];
+    }
+    
+    
+    getRequest = [NSString stringWithFormat:@"%@/%@/%@", @"http://jacbaciatge.herokuapp.com", @"check", [PFUser currentUser].username];
+    NSLog(@"sent check to url: %@", getRequest);
         
     NSURL *url = [NSURL URLWithString:getRequest];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
@@ -115,16 +141,22 @@ do{
     responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
     NSLog(@"final url: %@", getRequest);
     NSLog(@"Response: %@", responseString);
-    NSLog(@"Current Time: %d", currentTime);
+    NSLog(@"Current Time: %@", currentDateTime);
+    NSLog(@"Final Date Time: %@", finalDateTime);
+    NSLog(@"time interval since date: %f", distanceBetweenDates);
 
     currentTime++;
-    NSLog(@"TEST3");
+    currentDateTime = [NSDate date];
+    distanceBetweenDates = [finalDateTime timeIntervalSinceDate:currentDateTime];
 
-} while([responseString isEqual: @"no"] && ( currentTime < 20));
-    
-    if (currentTime > 19 && ![responseString isEqual: @"no"]) {
+} while([responseString isEqual: @"no"] && distanceBetweenDates > 0/*( currentDateTime < finalDateTime)*/);
+    NSLog(@"time interval since date: %f", distanceBetweenDates);
+    if (/*currentDateTime > finalDateTime*/ distanceBetweenDates < 0 && [responseString isEqual: @"no"]) {
         // QUIT GET THE FUCK OUT
-        [self applicationDidEnterBackground:nil];
+        //NSLog(@"Current Time: %@", currentDateTime);
+        //NSLog(@"Final Date Time: %@", finalDateTime);
+        NSLog(@"QUITTING THE FUCK OUT \n \n \n \n");
+        [self applicationDidEnterBackground:nil]; //should send the iterrupt signal
         return false;
         
     }
@@ -180,9 +212,34 @@ do{
     NSString* getRequest;
     NSString *responseString;
     
+    NSDate *currentDateTime = [NSDate date];
+    NSDate *finalDateTime = [currentDateTime dateByAddingTimeInterval:10];
+    NSTimeInterval distanceBetweenDates = [finalDateTime timeIntervalSinceDate:currentDateTime];
     
     do{
-
+        
+        for(int i=0; i < 10000000; i+=2)
+         {
+         i--;
+         i+=2;
+         i-=2;
+         }
+        
+        
+        
+        
+        
+        NSDate *innerDateTime = [NSDate date];
+        NSDate *innerFinalDateTime = [currentDateTime dateByAddingTimeInterval:3];
+        NSTimeInterval innerDistanceBetweenDates = [innerFinalDateTime timeIntervalSinceDate:innerDateTime];
+        
+        while (innerDistanceBetweenDates > 0)
+        {
+            NSLog(@"Killing time");
+            innerDateTime = [NSDate date];
+            innerDistanceBetweenDates = [innerFinalDateTime timeIntervalSinceDate:innerDateTime];
+        }
+        
         getRequest = [NSString stringWithFormat:@"%@/%@/%@", @"http://jacbaciatge.herokuapp.com", @"postgame", [PFUser currentUser].username];
         NSLog(@"url: %@", getRequest);
         
@@ -202,10 +259,12 @@ do{
         responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
         NSLog(@"final url: %@", getRequest);
         NSLog(@"Response: %@", responseString);
+        
+        //NSLog(@"REACHED");
 
     }
-    while([responseString isEqual: @"wait"]);
-        
+    while([responseString isEqual: @"wait"] && distanceBetweenDates > 0);
+    NSLog(@"DON'T FUCKING GET TO HERE");
     if([responseString isEqual:@"cancel"] || [responseString isEqual:@"exit"]){
             [self applicationDidEnterBackground:nil];
             return;

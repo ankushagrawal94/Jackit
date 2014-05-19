@@ -15,15 +15,6 @@
 
 @implementation LoginViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -96,7 +87,8 @@
             _reEnterPasswordField.text = nil;
             _emailField.text = nil;
             //[self performSegueWithIdentifier:@"login" sender:self];
-            ViewController *myView = [[ViewController alloc] init];
+            ViewController *myView = [[UIStoryboard storyboardWithName:@"Main"
+                                                                bundle: nil] instantiateViewControllerWithIdentifier:@"ViewControllerID"];
             //UINavigationController *navControl = [[UINavigationController alloc] initWithRootViewController:myView];
             [self.navigationController pushViewController:myView animated:YES];
         }
@@ -122,12 +114,10 @@
             _passwordField.text = nil;
             _reEnterPasswordField.text = nil;
             _emailField.text = nil;
-            //[self performSegueWithIdentifier:@"login" sender:self];
-            ViewController *myView = [[ViewController alloc] init];
+            ViewController *myView = [[UIStoryboard storyboardWithName:@"Main"
+                                                                bundle: nil] instantiateViewControllerWithIdentifier:@"ViewControllerID"];
+            //UINavigationController *navControl = [[UINavigationController alloc] initWithRootViewController:myView];
             [self.navigationController pushViewController:myView animated:YES];
-
-
-
         }
         if (error) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"ooops!" message:@"Sorry we had a problem logging you in" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
